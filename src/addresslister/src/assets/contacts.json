@@ -1,0 +1,40 @@
+[
+  {
+    "id": 1,
+    "name": "Karsten Müller",
+    "addresses": [
+      {
+        "street": "Hauptstraße 23",
+        "zip": 40227,
+        "city": "Düsseldorf"
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "name": "Nina-Marie Paulsen",
+    "addresses": [
+      {
+        "street": "Poststraße 12a",
+        "zip": 40472,
+        "city": "Düsseldorf-Rath"
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "name": "Stefan Reihenmehr",
+    "addresses": [
+      {
+        "street": "Waldweg 56",
+        "zip": 50667,
+        "city": "Köln"
+      },
+      {
+        "street": "Luisengasse 2",
+        "zip": 54634,
+        "city": "Bitburg"
+      }
+    ]
+  }
+]

@@ -10,9 +10,15 @@
 <script>
 export default {
   name: "AddressItem",
+  
   props: {
     street: String,
-    zip: Number,
+    zip: {
+      type: Number,
+      validator: function(value){
+        return value.toString().length === 5
+      }
+    },
     city: String,
   },
 };

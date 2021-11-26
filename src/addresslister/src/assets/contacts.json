@@ -1,6 +1,7 @@
 [
   {
     "id": 1,
+	"hidden": false,
     "name": "Karsten Müller",
     "addresses": [
       {
@@ -12,6 +13,7 @@
   },
   {
     "id": 2,
+	"hidden": false,
     "name": "Nina-Marie Paulsen",
     "addresses": [
       {
@@ -23,6 +25,19 @@
   },
   {
     "id": 3,
+	"hidden": true,
+    "name": "Till Andersen",
+    "addresses": [
+      {
+        "street": "Keplerallee 12",
+        "zip": 47051,
+        "city": "Duisburg"
+      }
+    ]
+  },
+  {
+    "id": 4,
+	"hidden": false,
     "name": "Stefan Reihenmehr",
     "addresses": [
       {

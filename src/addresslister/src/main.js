@@ -1,4 +1,4 @@
 import { createApp } from 'vue'
-import Lister from './AddressLister.vue'
+import App from './App.vue'
 
-createApp(Lister).mount('#app')
+createApp(App).mount('#app')

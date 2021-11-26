@@ -2,8 +2,8 @@
   <person-card
     v-for="contact in contacts"
     :key="contact.id"
-    :name="contact.name"
-    :addresses="contact.addresses"
+    :contact="contact"
+    :editMode="editMode"
   />
 </template>
 
@@ -12,12 +12,15 @@ import PersonCard from "./components/PersonCard.vue";
 import json from "./assets/contacts.json";
 
 export default {
+  name: "App",
+
   data() {
     return {
       contacts: json,
+      editMode: false
     };
   },
-  name: "App",
+  
   components: {
     PersonCard,
   },

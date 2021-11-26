@@ -1,17 +1,20 @@
 <template>
-  <div class="cardContainer">
+  <div class="cardContainer" :class="{ hidden: contact.hidden }">
     <div class="cardTitleArea">
-      <img style="height:38px; margin-right: 33px" src="../assets/img/icon_user_24px.png">
-      <span class="cardName">{{ name }}</span>
+      <img
+        style="height: 38px; margin-right: 33px"
+        src="../assets/img/icon_user_24px.png"
+      />
+      <span class="cardName">{{ contact.name }}</span>
     </div>
     <address-item
-    class="cardAddress"
-      v-for="(address, index) in addresses"
+      class="cardAddress"
+      v-for="(address, index) in contact.addresses"
       :key="index"
       :city="address.city"
       :street="address.street"
       :zip="address.zip"
-      :style="{ 'grid-row': index+2 }"
+      :style="{ 'grid-row': index + 2 }"
     />
   </div>
 </template>
@@ -21,10 +24,19 @@ import AddressItem from "./AddressItem.vue";
 
 export default {
   name: "PersonCard",
-  props: {
-    name: String,
-    addresses: Object,
+
+  data() {
+    return {};
   },
+
+  props: {
+    contact: {
+      type: Object,
+      required: true,
+    },
+    editMode: Boolean,
+  },
+  
   components: {
     AddressItem,
   },
@@ -47,6 +59,14 @@ export default {
   padding: 15px 15px 15px 34px;
   -webkit-box-shadow: 0px 2px 3px 0px rgba(0, 0, 0, 0.16);
   box-shadow: 0px 2px 3px 0px rgba(0, 0, 0, 0.16);
+}
+
+.hidden {
+  border: solid 2px transparent;
+  border-radius: 0px 10px 10px 10px;
+  background-color: #f3f3f3;
+  -webkit-box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0.16);
+  box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0.16);
 }
 
 .cardTitleArea {

@@ -51,5 +51,22 @@
         "city": "Bitburg"
       }
     ]
+  },
+  {
+    "id": 5,
+	"hidden": false,
+    "name": "Paul Reihenmehr",
+    "addresses": [
+      {
+        "street": "Waldweg 56",
+        "zip": 50667,
+        "city": "Köln"
+      },
+      {
+        "street": "Luisengasse 2",
+        "zip": 54634,
+        "city": "Bitburg"
+      }
+    ]
   }
 ]

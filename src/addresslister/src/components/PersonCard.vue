@@ -11,7 +11,11 @@
       <span class="cardName">{{ contact.name }}</span>
     </div>
     <div class="cardButtons" :class="editMode ? '' : 'invisible'">
-      <font-awesome-icon class="cardButtonIcon" icon="pencil-alt" />
+      <font-awesome-icon
+        class="cardButtonIcon"
+        icon="pencil-alt"
+        @click="editContact"
+      />
       <font-awesome-icon
         class="cardButtonIcon"
         :class="cardInactive ? 'inactive' : ''"
@@ -23,9 +27,7 @@
       class="cardAddress"
       v-for="(address, index) in contact.addresses"
       :key="index"
-      :city="address.city"
-      :street="address.street"
-      :zip="address.zip"
+      :addressInfo="address"
       :style="{ 'grid-row': index + 2 }"
     />
   </div>
@@ -47,6 +49,10 @@ export default {
   methods: {
     toggleHidden() {
       this.cardInactive = !this.cardInactive;
+      this.$emit("toggle-hide-contact", this.contact.id);
+    },
+    editContact() {
+      this.$emit("edit-contact", this.contact.id);
     },
   },
 
@@ -54,6 +60,7 @@ export default {
     editMode: function () {
       this.cardInvisible = !this.editMode && this.cardInactive;
     },
+    contact: function () {},
   },
 
   mounted: function () {

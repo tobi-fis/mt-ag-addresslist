@@ -1,6 +1,10 @@
 <template>
   <div id="appHeader">
-    <div :class="{ fab: true, secondary:editMode }" @click="toggleEdit" style="top: 20px; left: 20px">
+    <div
+      :class="{ fab: true, secondary: editMode }"
+      @click="toggleEditMode"
+      style="top: 20px; left: 20px"
+    >
       <font-awesome-icon v-if="editMode" class="buttonIcon" icon="check" />
       <font-awesome-icon v-else class="buttonIcon" icon="pencil-alt" />
     </div>
@@ -12,12 +16,22 @@
       :key="contact.id"
       :contact="contact"
       :editMode="editMode"
+      @toggle-hide-contact="toggleHiddenStatus"
+      @edit-contact="editContact"
     />
   </div>
+  <edit-dialog
+    :contactInfo="contactToEdit"
+    :shouldRender="renderEditDialog"
+    @abortEdit="abortEdit"
+    @deleteContact="deleteContact"
+    @confirmEdit="closeEditDialog"
+  />
 </template>
 
 <script>
 import PersonCard from "./components/PersonCard.vue";
+import EditDialog from "./components/EditDialog.vue";
 import json from "./assets/contacts.json";
 
 export default {
@@ -28,29 +42,73 @@ export default {
       contacts: json,
       editMode: false,
       headerText: "Meine Adressen",
+      contactToEdit: {},
+      renderEditDialog: false,
     };
   },
 
   methods: {
-    toggleEdit(){
+    toggleEditMode() {
       this.editMode = !this.editMode;
       if (this.editMode) {
-        this.headerText = "Adressen bearbeiten"
+        this.headerText = "Adressen bearbeiten";
+      } else {
+        this.headerText = "Meine Adressen";
       }
-      else{
-        this.headerText = "Meine Adressen"
+    },
+    toggleHiddenStatus(id) {
+      const identifiedContact = this.contacts.find(
+        (contact) => contact.id === id
+      );
+      identifiedContact.hidden = !identifiedContact.hidden;
+    },
+    editContact(idToEdit) {
+      this.contactToEdit = this.contacts.find(
+        (contact) => contact.id === idToEdit
+      );
+      this.renderEditDialog = true;
+    },
+    abortEdit(id, contactOld) {
+         let resetContact = this.contacts.find(
+        (contact) => contact.id === id
+      );
+      
+      resetContact.name = contactOld.name;
+
+      let j = 0
+      for (const address of contactOld.addresses){
+        Object.assign(resetContact.addresses[j], address);
+        j++;
       }
-    }
+
+      // Alle ggf. hinzugefügten Adressen löschen
+      resetContact.addresses.splice(j)
+
+      this.closeEditDialog();
+    },
+    closeEditDialog() {
+      (this.renderEditDialog = false), (this.contactToEdit = {});
+    },
+    deleteContact(idToDelete) {
+      this.closeEditDialog();
+      this.contacts.splice(
+        this.contacts.findIndex(function (i) {
+          return i.id === idToDelete;
+        }),
+        1
+      );
+    },
   },
 
   components: {
     PersonCard,
+    EditDialog,
   },
 };
 </script>
 
 <style>
-.buttonIcon{
+.buttonIcon {
   height: 20px;
   vertical-align: text-bottom;
 }

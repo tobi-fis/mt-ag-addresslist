@@ -12,12 +12,12 @@
     </div>
     <div class="cardButtons" :class="editMode ? '' : 'invisible'">
       <font-awesome-icon
-        class="cardButtonIcon"
+        class="iconButton"
         icon="pencil-alt"
         @click="editContact"
       />
       <font-awesome-icon
-        class="cardButtonIcon"
+        class="iconButton"
         :class="cardInactive ? 'inactive' : ''"
         icon="eye"
         @click="toggleHidden"
@@ -127,22 +127,6 @@ export default {
   grid-column: 2;
   display: flex;
   justify-content: space-between;
-}
-
-.cardButtonIcon {
-  grid-column: 2;
-  height: 28px;
-  margin: 0px 4px;
-  color: #0d5b8f;
-  cursor: pointer;
-}
-
-.cardButtonIcon.inactive {
-  color: #a2a2a2;
-}
-
-.cardButtonIcon:hover {
-  color: #1e6591;
 }
 
 .cardButtons {

@@ -8,7 +8,16 @@
       <font-awesome-icon v-if="editMode" class="buttonIcon" icon="check" />
       <font-awesome-icon v-else class="buttonIcon" icon="pencil-alt" />
     </div>
-    <p id="appHeaderText" v-text="headerText" />
+    <div id="appHeaderText">
+      <span v-text="headerText" />
+      <font-awesome-icon
+        v-if="editMode"
+        class="iconButton"
+        icon="plus"
+        style="height: 22px; width: 22px"
+        @click="newContact"
+      />
+    </div>
   </div>
   <div id="contactScroller">
     <person-card
@@ -25,7 +34,7 @@
     :shouldRender="renderEditDialog"
     @abortEdit="abortEdit"
     @deleteContact="deleteContact"
-    @confirmEdit="closeEditDialog"
+    @confirmEdit="confirmEdit"
   />
 </template>
 
@@ -33,6 +42,7 @@
 import PersonCard from "./components/PersonCard.vue";
 import EditDialog from "./components/EditDialog.vue";
 import json from "./assets/contacts.json";
+import { v4 as uuidv4 } from "uuid";
 
 export default {
   name: "App",
@@ -69,20 +79,17 @@ export default {
       this.renderEditDialog = true;
     },
     abortEdit(id, contactOld) {
-         let resetContact = this.contacts.find(
-        (contact) => contact.id === id
-      );
-      
-      resetContact.name = contactOld.name;
-
-      let j = 0
-      for (const address of contactOld.addresses){
-        Object.assign(resetContact.addresses[j], address);
-        j++;
+      let resetContact = this.contacts.find((contact) => contact.id === id);
+      if (resetContact != undefined) {
+        resetContact.name = contactOld.name;
+        let j = 0;
+        for (const address of contactOld.addresses) {
+          Object.assign(resetContact.addresses[j], address);
+          j++;
+        }
+        // Alle ggf. hinzugefügten Adressen löschen
+        resetContact.addresses.splice(j);
       }
-
-      // Alle ggf. hinzugefügten Adressen löschen
-      resetContact.addresses.splice(j)
 
       this.closeEditDialog();
     },
@@ -98,6 +105,28 @@ export default {
         1
       );
     },
+    newContact() {
+      this.contactToEdit = {
+        id: uuidv4(),
+        hidden: false,
+        name: "",
+        addresses: [{ street: "", zip: "", city: "" }],
+      };
+      this.renderEditDialog = true;
+    },
+    confirmEdit(id) {
+      // Prüfen ob ID schon vorhanden, falls ja nichts tun da Daten schon durch v-model aktualisiert werden
+      if (!this.contacts.some((contact) => contact.id === id)) {
+        let newContact = JSON.parse(JSON.stringify(this.contactToEdit));
+        this.contacts.push(newContact);
+      }
+      this.contacts.sort((a, b) => a.name.localeCompare(b.name));
+      this.closeEditDialog();
+    },
+  },
+
+  mounted: function () {
+    this.contacts.sort((a, b) => a.name.localeCompare(b.name));
   },
 
   components: {
@@ -124,6 +153,9 @@ export default {
 }
 
 #appHeaderText {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
   width: 800px;
   margin: 0px auto 0px auto;
   align-self: flex-end;
@@ -153,6 +185,7 @@ export default {
   display: none;
 }
 
+/* Floating Action Button */
 .fab {
   cursor: pointer;
   width: 56px;
@@ -183,5 +216,22 @@ export default {
 
 .fab.secondary:hover {
   background-color: #00b3a6;
+}
+
+/* Klickbares Icon */
+.iconButton {
+  grid-column: 2;
+  height: 28px;
+  margin: 0px 4px;
+  color: #0d5b8f;
+  cursor: pointer;
+}
+
+.iconButton.inactive {
+  color: #a2a2a2;
+}
+
+.iconButton:hover {
+  color: #1e6591;
 }
 </style>

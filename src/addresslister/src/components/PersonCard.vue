@@ -84,7 +84,7 @@ export default {
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
+<!-- Scoped Styles -->
 <style scoped>
 .cardContainer {
   display: grid;

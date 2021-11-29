@@ -103,18 +103,12 @@ export default {
     shouldRender: function () {
       if (this.shouldRender) {
         this.contact = this.contactInfo;
+        // Objekt ohne Referenz kopieren
         this.contactOld = JSON.parse(JSON.stringify(this.contactInfo));
       } else {
         this.contact = {};
         this.contactOld = {};
       }
-    },
-  },
-
-  computed: {
-    showAdd: function () {
-      // `this` points to the vm instance
-      return this.message.split("").reverse().join("");
     },
   },
 
@@ -134,6 +128,8 @@ export default {
 };
 </script>
 
+
+<!-- Globale Styles -->
 <style scoped>
 input {
   height: 56px;
@@ -144,6 +140,17 @@ input {
   font-size: 16px;
   padding-left: 16px;
   box-sizing: border-box;
+}
+
+input:hover{
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+input:focus{
+  border-bottom-color: #1E6591;
+  border-bottom-width: 2px;
+  padding-bottom: 0px;
+  background-color: rgba(0, 0, 0, 0.1);
 }
 
 .dialogOverlay {

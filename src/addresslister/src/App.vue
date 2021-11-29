@@ -19,6 +19,7 @@
       />
     </div>
   </div>
+
   <div id="contactScroller">
     <person-card
       v-for="contact in contacts"
@@ -115,7 +116,7 @@ export default {
       this.renderEditDialog = true;
     },
     confirmEdit(id) {
-      // Prüfen ob ID schon vorhanden, falls ja nichts tun da Daten schon durch v-model aktualisiert werden
+      // Prüfen ob ID schon vorhanden. Falls ja nichts tun, da Daten bereits durch v-model aktualisiert werden
       if (!this.contacts.some((contact) => contact.id === id)) {
         let newContact = JSON.parse(JSON.stringify(this.contactToEdit));
         this.contacts.push(newContact);
@@ -136,6 +137,7 @@ export default {
 };
 </script>
 
+<!-- Globale Styles -->
 <style>
 .buttonIcon {
   height: 20px;

@@ -2,9 +2,16 @@
   <div :class="editable ? 'addressContainerEditable' : 'addressContainer'">
     <img class="addressImg" src="../assets/img/icon_maps_place_24px.png" />
     <div id="verticalLine" />
+
+    <!-- Template Edit-Modus -->
     <template v-if="editable">
       <span class="addressTextInput">
-        <input type="text" v-model="address.street" style="width: 506px" />
+        <input
+          type="text"
+          v-model="address.street"
+          style="width: 506px"
+          placeholder="Straße und Nummer"
+        />
         <font-awesome-icon
           class="iconButton deleteAddress"
           icon="times"
@@ -16,15 +23,19 @@
           type="text"
           v-model="address.zip"
           style="width: 103px"
+          placeholder="PLZ"
           maxlength="5"
         />
         <input
           type="text"
           v-model="address.city"
           style="width: 393px; margin-left: 10px"
+          placeholder="Straße und Nummer"
         />
       </span>
     </template>
+
+    <!-- Template View-Modus -->
     <template v-else>
       <span class="addressText">{{ address.street }}</span>
       <span class="addressText">{{ address.zip }} {{ address.city }} </span>
@@ -56,11 +67,12 @@ export default {
     editable: {
       type: Boolean,
       default: false,
-    }
+    },
   },
 };
 </script>
 
+<!-- Scoped Styles -->
 <style scoped>
 input {
   height: 56px;
@@ -71,6 +83,18 @@ input {
   font-size: 16px;
   padding-left: 16px;
   box-sizing: border-box;
+  outline:none;
+}
+
+input:hover{
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+input:focus{
+  border-bottom-color: #1E6591;
+  border-bottom-width: 2px;
+  padding-bottom: 0px;
+  background-color: rgba(0, 0, 0, 0.1);
 }
 
 .addressContainer {
@@ -109,7 +133,7 @@ input {
 }
 
 .addressTextInput {
-  grid-column: 3 / 4;   
+  grid-column: 3 / 4;
   margin-left: 20px;
 }
 

@@ -3,10 +3,26 @@
     <img class="addressImg" src="../assets/img/icon_maps_place_24px.png" />
     <div id="verticalLine" />
     <template v-if="editable">
-      <input type="text" v-model="address.street" class="addressTextInput" style="width: 506px" />
       <span class="addressTextInput">
-      <input type="text" v-model="address.zip"  style="width: 103px" maxlength="5"/>
-      <input type="text" v-model="address.city" style="width: 393px; margin-left:10px;" />
+        <input type="text" v-model="address.street" style="width: 506px" />
+        <font-awesome-icon
+          class="iconButton deleteAddress"
+          icon="times"
+          @click="deleteAddress"
+        />
+      </span>
+      <span class="addressTextInput">
+        <input
+          type="text"
+          v-model="address.zip"
+          style="width: 103px"
+          maxlength="5"
+        />
+        <input
+          type="text"
+          v-model="address.city"
+          style="width: 393px; margin-left: 10px"
+        />
       </span>
     </template>
     <template v-else>
@@ -20,21 +36,27 @@
 export default {
   name: "AddressItem",
 
-    data() {
-    return {     
+  data() {
+    return {
       address: this.addressInfo,
     };
+  },
+
+  methods: {
+    deleteAddress() {
+      this.$emit("deleteAddress", this.addressInfo.id);
+    },
   },
 
   props: {
     addressInfo: {
       type: Object,
-      required:true
+      required: true,
     },
     editable: {
       type: Boolean,
       default: false,
-    },
+    }
   },
 };
 </script>
@@ -86,8 +108,18 @@ input {
   margin-left: 20px;
 }
 
-.addressTextInput{
-  grid-column: 3 / 4;
+.addressTextInput {
+  grid-column: 3 / 4;   
   margin-left: 20px;
+}
+
+.deleteAddress {
+  grid-row: 1;
+  grid-column: 3 / 4;
+  margin-left: 14px;
+  margin-top: 12px;
+  height: 16px;
+  width: 16px;
+  vertical-align: top;
 }
 </style>

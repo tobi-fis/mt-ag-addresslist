@@ -2,21 +2,38 @@
   <div v-if="shouldRender" class="dialogOverlay">
     <div class="dialogFrame">
       <div class="dialogContent">
-        <div class="dialogTitleArea">
-          <img
-            style="height: 38px; margin: 8px 12px 0px 0px"
-            src="../assets/img/icon_user_24px.png"
+        <div class="dialogInput">
+          <div class="dialogTitleArea">
+            <img
+              style="height: 38px; margin: 8px 12px 0px 0px"
+              src="../assets/img/icon_user_24px.png"
+            />
+            <input type="text" v-model="contact.name" style="width: 527px" />
+          </div>
+          <address-item
+            class="cardAddress"
+            v-for="(address, index) in contact.addresses"
+            :key="address.id"
+            :addressInfo="address"
+            :editable="true"
+            :style="{ 'grid-row': index + 2 }"
+            @deleteAddress="deleteAddress"
           />
-          <input type="text" v-model="contact.name" style="width: 527px" />
         </div>
-        <address-item
-          class="cardAddress"
-          v-for="(address, index) in contact.addresses"
-          :key="index"
-          :addressInfo="address"
-          :editable="true"
-          :style="{ 'grid-row': index + 2 }"
-        />
+        <div
+          style="
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 75px;
+          "
+        >
+          <font-awesome-icon
+            class="iconButton addNewAddress"
+            icon="plus"
+            @click="addAddress"
+          />
+        </div>
       </div>
 
       <div class="dialogButtons">
@@ -42,6 +59,7 @@
 
 <script>
 import AddressItem from "./AddressItem.vue";
+import { v4 as uuidv4 } from "uuid";
 
 export default {
   name: "EditDialog",
@@ -63,6 +81,22 @@ export default {
     deleteContact() {
       this.$emit("deleteContact", this.contactInfo.id);
     },
+    addAddress() {
+      this.contact.addresses.push({
+        street: "",
+        zip: "",
+        city: "",
+        id: uuidv4(),
+      });
+    },
+    deleteAddress(idToDelete) {
+      this.contact.addresses.splice(
+        this.contact.addresses.findIndex(function (i) {
+            return i.id === idToDelete;
+          }),
+        1
+      );
+    },
   },
 
   watch: {
@@ -72,7 +106,15 @@ export default {
         this.contactOld = JSON.parse(JSON.stringify(this.contactInfo));
       } else {
         this.contact = {};
+        this.contactOld = {};
       }
+    },
+  },
+
+  computed: {
+    showAdd: function () {
+      // `this` points to the vm instance
+      return this.message.split("").reverse().join("");
     },
   },
 
@@ -113,27 +155,40 @@ input {
   background-color: rgba(159, 159, 159, 0.8);
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
 }
 
 .dialogFrame {
   width: 800px;
-  opacity: 1;
+  margin-top: 144px;
 }
 
 .dialogContent {
   padding-top: 25px;
-  display: grid;
-  grid-template-columns: 90px auto auto;
-  grid-template-rows: 56px;
-  grid-auto-rows: 120px;
-  row-gap: 15px;
   min-height: 295px;
   background-color: white;
   border: solid 1px #707070;
   border-radius: 5px;
   -webkit-box-shadow: 0px 3px 6px 0px rgba(0, 0, 0, 0.16);
   box-shadow: 0px 3px 6px 0px rgba(0, 0, 0, 0.16);
+  box-sizing: border-box;
+  max-height: calc(100vh - 250px);
+  overflow-y: scroll;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Scrollbar für Chrome, Safari and Opera verstecken */
+.dialogContent::-webkit-scrollbar {
+  display: none;
+}
+
+.dialogInput {
+  display: grid;
+  grid-template-columns: 90px auto auto;
+  grid-template-rows: 56px;
+  grid-auto-rows: 120px;
+  row-gap: 15px;
 }
 
 .dialogTitleArea {
@@ -178,5 +233,10 @@ input {
 
 .cardAddress {
   grid-column: 2;
+}
+
+.addNewAddress {
+  height: 22px;
+  width: 22px;
 }
 </style>

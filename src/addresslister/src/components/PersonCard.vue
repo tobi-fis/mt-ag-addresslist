@@ -26,7 +26,7 @@
     <address-item
       class="cardAddress"
       v-for="(address, index) in contact.addresses"
-      :key="index"
+      :key="address.id"
       :addressInfo="address"
       :style="{ 'grid-row': index + 2 }"
     />
